@@ -6,6 +6,7 @@ class Impression
   include Mongoid::Timestamps
 
   include Impressionist::CounterCache
+  include Impressionist::EndedAt
   Impressionist::SetupAssociation.new(self).set
 
   field :impressionable_id, type: BSON::ObjectId
@@ -19,6 +20,7 @@ class Impression
   field :session_hash
   field :message
   field :referrer
+  field :ended_at
 
   after_save :impressionable_counter_cache_updatable?
 

@@ -1,3 +1,5 @@
+require 'impressionist/ended_at'
+
 require 'impressionist/setup_association'
 
 require 'impressionist/counter_cache'
