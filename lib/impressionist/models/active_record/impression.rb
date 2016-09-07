@@ -4,7 +4,9 @@
 
 class Impression < ActiveRecord::Base
 
+  self.primary_key = 'request_hash'
   include Impressionist::CounterCache
+  include Impressionist::EndedAt
 
   # sets belongs_to and attr_accessible depending on Rails version
   Impressionist::SetupAssociation.new(self).set
