@@ -37,7 +37,8 @@ module Impressionist
                         :message,
                         :user_id,
                         :params,
-                        :ended_at)
+                        :ended_at,
+                        :user_agent)
       end
 
       def toggle
