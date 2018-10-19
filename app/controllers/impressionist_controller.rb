@@ -2,6 +2,23 @@ require 'digest/sha2'
 
 module ImpressionistController
   module ClassMethods
+    def self.filtered_params_hash(hash)
+      filtered_hash = HashWithIndifferentAccess.new
+      filtered_params = Rails.application.config.filter_parameters
+      hash.keys.each do |key|
+        unless filtered_params.index(key.to_sym)
+          value = hash[key]
+          filtered_hash[key] = if value.is_a?(Hash)
+            filtered_params_hash(value)
+          else
+            value
+          end
+        end
+      end
+
+      filtered_hash
+    end
+
     def impressionist(opts={})
       before_action { |c| c.impressionist_subapp_filter(opts) }
     end
@@ -51,9 +68,13 @@ module ImpressionistController
         :session_hash => session_hash,
         :ip_address => request.remote_ip,
         :referrer => request.referer,
-        :params => params_hash,
+        :params => filtered_params_hash,
         :user_agent => request.user_agent,
         )
+    end
+
+    def filtered_params_hash(hash=params_hash)
+      ImpressionistController::ClassMethods.filtered_params_hash(hash)
     end
 
     private
