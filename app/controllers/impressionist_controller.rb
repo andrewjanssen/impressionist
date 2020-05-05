@@ -61,7 +61,7 @@ module ImpressionistController
         :ip_address => request.remote_ip,
         :referrer => request.referer,
         :params => filter.filter(params_hash),
-        :user_agent => request.user_agent,
+        :user_agent => request.user_agent || '',
         )
     end
 
